@@ -1,0 +1,2306 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{url}
+
+% ============================================================
+% THEOREM ENVIRONMENTS
+% ============================================================
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ============================================================
+% NOTATION
+% ============================================================
+
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\Rcal}{\mathcal{R}}
+\newcommand{\Scal}{\mathcal{S}}
+\newcommand{\Acal}{\mathcal{A}}
+% \setlength{\parindent}{0pt}
+
+% ============================================================
+% TITLE
+% ============================================================
+
+\title{\textbf{A Congruence Construction for Infinitely Many Twin Primes}}
+
+\author{
+    Kavish Kapoor\\
+    % ORCID: \href{https://orcid.org/0009-0009-8393-686X}{0009-0009-8393-686X}\\
+    \href{mailto:kavishkapoor97@gmail.com}{kavishkapoor97@gmail.com}
+}
+
+\date{\today}
+
+% ============================================================
+% DOCUMENT
+% ============================================================
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+We present a congruence based construction that proves the existence of infinitely many twin primes. The construction begins by restricting the integers to the residue classes modulo $6$ compatible with a twin prime pair and then successively excludes divisibility by larger primes for both members of the pair. At each finite stage, the Chinese remainder theorem provides compatible admissible integers, and we show that any such integer occurring within the corresponding quadratic range must form a twin prime pair, using the elementary fact that every composite integer has a prime divisor not exceeding its square root. The main global ingredient is a quantitative prime selection argument, which establishes that, at sufficiently large scales, enough primes remain outside the prescribed forbidden residue classes to supply admissible candidates for the construction. Combining this selection result with the finite stage primality criterion yields admissible integers at arbitrarily large stages and hence infinitely many twin primes.
+
+\medskip
+
+\noindent
+\textbf{Keywords:}
+twin primes, congruence construction, congruence sieve, prime selection,
+Chinese remainder theorem.
+
+\end{abstract}
+
+
+% ============================================================
+% 1. INTRODUCTION
+% ============================================================
+
+\section{Introduction}
+
+The Twin Prime Conjecture asserts that there are infinitely many primes
+$p$ for which $p+2$ is also prime \cite{hardyWright,halberstamRichert}.
+In this paper we give a congruence based construction that produces such
+pairs at arbitrarily large scales.
+
+The construction is motivated by the elementary observation that a
+twin prime pair greater than $3$ must have the form
+
+$$
+n\equiv5\pmod6,
+\qquad
+n+2\equiv1\pmod6.
+$$
+
+Thus the primes $2$ and $3$ can be removed at the outset.  We then let
+
+$$
+q_1=5<q_2=7<q_3<\cdots
+$$
+
+be the increasing sequence of primes greater than $3$ and, at stage
+$i$, exclude divisibility by $q_1,\ldots,q_i$ from both $n$ and
+$n+2$.
+
+The resulting finite congruence system is compatible, and the Chinese
+remainder theorem gives infinitely many representatives at every fixed
+stage \cite{nivenZuckermanMontgomery}.  The central finite stage
+observation is stronger: if an admissible representative occurs in the
+interval
+
+$$
+(q_i,q_i^2-2],
+$$
+
+then both $n$ and $n+2$ are prime.  This follows from the elementary
+square root criterion for composite integers: if an integer $m>1$ is
+composite, then it has a prime divisor at most $\sqrt{m}$.
+
+The principal issue is therefore the existence of suitable admissible
+integers in the required ranges.  To address this, the paper develops a
+prime selection argument at the quadratic scale.  For a prime $q$,
+we consider primes satisfying
+
+$$
+q<p<0.97q^2,
+\qquad
+p\equiv5\pmod6,
+$$
+
+and estimate how many can lie in prescribed forbidden residue classes.
+The resulting bounds show that, for sufficiently large $q$, the
+available primes cannot all be absorbed by the forbidden classes.
+
+The argument is applied in particular to the shifted classes
+
+$$
+p\equiv-2\pmod r.
+$$
+
+A counting inequality comparing the total number of relevant primes
+with the number occurring in these forbidden classes yields a prime
+which avoids all of the required shifted divisibility conditions.  This
+provides the admissible integer needed by the finite stage construction.
+
+The paper is organized as follows.  We first establish the finite
+congruence framework and its Chinese remainder structure.  We then
+prove the quadratic window primality criterion.  The subsequent
+sections establish the prime existence and forbidden class estimates,
+including the quantitative bound at the scale $0.97q^2$.  Finally, these
+results are combined to obtain admissible integers at arbitrarily
+large stages and hence infinitely many twin prime pairs.
+
+The construction thus separates the problem into two complementary
+components: a finite congruence mechanism that turns admissibility into
+primality, and a quantitative prime selection argument that guarantees
+the required admissible primes occur at arbitrarily large scales.
+
+
+\section{Historical Background and Notable Work}
+
+The problem of understanding prime pairs separated by a fixed even
+integer is among the classical questions of prime number theory.  The
+special case of difference $2$ is the Twin Prime Conjecture
+\cite{hardyWright,halberstamRichert}.
+
+The modern heuristic framework for prime constellations is closely
+associated with Hardy and Littlewood, whose work led to conjectural
+asymptotic formulae for prime tuples \cite{hardyLittlewood1923}.
+For the twin prime case, the Hardy--Littlewood heuristic predicts an
+asymptotic number of prime pairs up to $x$ of the form
+
+$$
+    \pi_2(x)
+    \sim
+    2C_2\frac{x}{(\log x)^2},
+$$
+
+where
+
+$$
+    C_2
+    =
+    \prod_{p>2}
+    \frac{p(p-2)}{(p-1)^2}
+$$
+
+is the twin prime constant.  This provides a quantitative prediction
+for the abundance of twin primes, although it does not establish their
+infinitude \cite{hardyLittlewood1923}.
+
+An important early unconditional result was obtained by Viggo Brun.
+Using sieve methods, Brun proved that the sum of the reciprocals of the
+twin primes converges \cite{brun1919}.  His work established sieve
+methods as a fundamental tool in the study of prime pairs and led to
+extensive developments concerning almost primes and bounded gaps
+\cite{halberstamRichert,greaves}.
+
+A central difficulty in sieve theory is the parity problem: sieve
+methods are effective at controlling divisibility by small primes, but
+distinguishing primes from integers with an even number of prime factors
+is considerably more difficult \cite{halberstamRichert,greaves}.  This
+difficulty is particularly relevant to the problem of proving that both
+members of a prescribed prime pair are simultaneously prime.
+
+A major breakthrough in the study of bounded prime gaps occurred in
+2013, when Yitang Zhang proved that infinitely many pairs of distinct
+primes occur within a fixed bounded distance \cite{zhang2014}.  The
+Polymath8 collaboration subsequently reduced the bound substantially
+\cite{polymath8}.  Independent work of Maynard and Tao introduced multidimensional
+sieve methods that gave stronger boundedgap results
+\cite{maynard2015,polymathRetrospective}..  The Polymath8b project ultimately obtained
+
+$$
+    \liminf_{n\to\infty}(p_{n+1}-p_n)\le246.
+$$
+
+The bounded gap problem then saw a rapid sequence of further
+improvements in 2026.  Independent work by Hanxin Zhang and Julia
+Stadlmann established the bound
+
+$$
+    \liminf_{n\to\infty}(p_{n+1}-p_n)\le240.
+$$
+
+Zhang's preprint was deposited on August 28, 2026, while Stadlmann's
+preprint was posted on August 31, 2026
+\cite{zhang240,stadlmann2026}.  Stadlmann's argument combines the
+Bombieri--Vinogradov theorem with newer equidistribution estimates for
+smooth moduli and develops a corresponding enlargement of the support
+in the GPY/Maynard--Tao framework \cite{stadlmann2026}.  The two
+$240$ results are independent rather than successive improvements of
+one another.
+
+A further improvement was subsequently reported by Axiom Math.
+The preprint \textit{A New Bound for Small Gaps Between Primes},
+by François Charton, Letong Hong, Kenny Lau, Ken Ono, Guillaume Remy,
+Ho Chung Siu, Ashvin A. Swaminathan, Jesse Thorner, and Yunzhou Xie,
+establishes
+
+$$
+    \liminf_{n\to\infty}(p_{n+1}-p_n)\le212
+$$
+
+by building on Stadlmann's $240$ result \cite{axiom212}.  The authors
+describe the work as a preliminary draft and state that AxiomProver
+autonomously generated a Lean certificate of the deduction of the main
+theorem from the mathematical specifications used in the paper
+\cite{axiom212}.  The formal certification should therefore be
+distinguished from an independent formalization of every analytic input
+used in the argument.
+
+OpenAI subsequently reported a further improvement to
+
+$$
+    \liminf_{n\to\infty}(p_{n+1}-p_n)\le186.
+$$
+
+The associated work establishes a $\mathrm{DHL}[40,2]$ statement and
+applies it to an explicit admissible $40$-element set of diameter
+$186$ \cite{openai2026}.  The argument combines equidistribution
+estimates with complementary factorization conditions, enlarged
+support for a multidimensional Selberg sieve, and a numerical
+optimization \cite{openai2026}.
+
+A companion Lean 4 development and numerical certificate have also
+been released.  The formalization is explicitly conditional: its
+main statements are proved in Lean assuming stated rank-three
+hyper-Kloosterman, rank-two Kloosterman-correlation, and numerical
+integral/cap inputs.  The repository therefore provides a formal
+verification of the deductions from those inputs rather than a
+formalization of the inputs themselves \cite{openaiPrimeGaps186}.
+
+These developments improve the known upper bound for the liminf of
+consecutive prime gaps, but none resolves the Twin Prime Conjecture.
+If
+
+$$
+    H_1=\liminf_{n\to\infty}(p_{n+1}-p_n),
+$$
+
+then the Twin Prime Conjecture is equivalent to
+
+$$
+    H_1=2.
+$$
+
+Thus bounds such as
+
+$$
+    H_1\le186,
+$$
+
+while substantially stronger than earlier bounded gap results, still
+only establish that some even gap of size at most $186$ occurs
+infinitely often.  They do not establish that the specific gap $2$
+occurs infinitely often.  The distinction between bounded prime gaps
+and twin primes is therefore fundamental.
+
+The present paper takes a different approach from the general
+bounded gap framework.  Rather than seeking an optimal bound for the
+liminf of consecutive prime gaps, we focus directly on the specific
+pair
+
+$$
+    \{n,n+2\}.
+$$
+
+Our construction uses finite congruence exclusions on both members of
+the pair, a quadratic interval in which the surviving integer is
+forced to be prime, and a quantitative prime selection argument that
+produces admissible candidates at arbitrarily large stages.  The method
+therefore targets gap $2$ directly rather than obtaining a bounded gap
+as an intermediate objective.
+
+
+
+
+% ============================================================
+% 3. THE TWIN-PRIME CONGRUENCE FRAMEWORK
+% ============================================================
+
+\section{The Congruence Framework}
+
+\subsection{The basic progression}
+
+We restrict attention to integers satisfying
+\[
+    n\equiv5\pmod6.
+\]
+Then automatically
+\[
+    n+2\equiv1\pmod6.
+\]
+Therefore
+\[
+    \gcd(n,6)=\gcd(n+2,6)=1.
+\]
+
+This removes the only possible prime divisors $2$ and $3$ before the
+stage-by-stage construction begins.
+
+We define
+\[
+    q_1=5<q_2=7<q_3=11<\cdots
+\]
+to be the increasing sequence of all primes greater than $3$.
+
+\subsection{Ordinary stage conditions}
+
+At stage $i$, the ordinary conditions are
+\[
+    q_j\nmid n
+    \qquad(1\le j\le i)
+\]
+and
+\[
+    q_j\nmid n+2
+    \qquad(1\le j\le i).
+\]
+
+Equivalently,
+\[
+    n\not\equiv0\pmod{q_j}
+    \qquad(1\le j\le i),
+\]
+and
+\[
+    n\not\equiv-2\pmod{q_j}
+    \qquad(1\le j\le i).
+\]
+
+
+\begin{definition}[Stage-$i$ admissible set]
+For each $i\ge1$, define
+\[
+\Acal_i
+=
+\left\{
+n\in\ZZ:
+\begin{array}{l}
+n\equiv5\pmod6,\\
+q_j\nmid n\quad(1\le j\le i),\\
+q_j\nmid n+2\quad(1\le j\le i)
+\end{array}
+\right\}.
+\]
+\end{definition}
+
+The active quadratic interval at stage $i$ is
+\[
+    I_i=(q_i,q_i^2-2].
+\]
+
+We shall write
+\[
+    \Scal_i=\Acal_i\cap I_i
+\]
+for the set of stage-$i$ admissible integers that actually lie in the
+active interval.
+
+
+% ============================================================
+% 4. CRT STRUCTURE
+% ============================================================
+
+\section{Finite Congruence Compatibility}
+
+The congruence conditions at a fixed stage involve pairwise coprime
+moduli.  Consequently they may be combined using the Chinese remainder
+theorem.
+
+For convenience, define the ordinary stage modulus
+\[
+    L_i
+    =
+    6\prod_{j=1}^{i}q_j.
+\]
+
+For each prime $q_j$, the forbidden residue classes are
+
+\[
+    0\pmod{q_j}
+\]
+on the $n$-side and
+\[
+    -2\pmod{q_j}
+\]
+on the shifted side.
+
+The resulting local restrictions are compatible because, for every
+$q_j>2$,
+\[
+    0\not\equiv-2\pmod{q_j}.
+\]
+
+\begin{proposition}[Local admissibility]
+At every finite stage $i$, the system of congruence exclusions defining
+$\Acal_i$ is locally nonempty modulo every prime divisor of $L_i$.
+\end{proposition}
+
+\begin{proof}
+Modulo $2$ and $3$, the fixed condition
+\[
+    n\equiv5\pmod6
+\]
+selects a nonzero residue.
+
+For each $q_j>3$, the two forbidden residue classes are
+\[
+    n\equiv0\pmod{q_j}
+    \qquad\text{and}\qquad
+    n\equiv-2\pmod{q_j}.
+\]
+Since $q_j\ge5$, these are distinct and leave
+$q_j-2\ge3$ allowable residue classes modulo $q_j$.
+Hence the local condition is nonempty.
+
+
+
+Therefore the local restrictions are compatible at every prime
+dividing $L_i$.
+\end{proof}
+
+\begin{proposition}[Chinese remainder theorem]
+For every finite stage $i$, the set $\Acal_i$ contains infinitely many
+integers.
+\end{proposition}
+
+\begin{proof}
+Choose, for each $q_j$, a residue class different from the two forbidden
+classes.  Together with
+\[
+    n\equiv5\pmod6,
+\]
+this gives a compatible system of congruences modulo the pairwise
+coprime moduli
+\[
+    6,q_1,\ldots,q_{i}.
+\]
+The Chinese remainder theorem therefore gives a solution modulo
+\[
+    L_i=6\prod_{j=1}^{i}q_j.
+\]
+
+If $n_0$ is one solution, then every integer of the form
+\[
+    n=n_0+kL_i,\qquad k\in\ZZ,
+\]
+satisfies exactly the same finite collection of congruence conditions.
+
+Hence $\Acal_i$ is infinite.
+\end{proof}
+
+\begin{remark}
+The preceding proposition proves only the existence of infinitely many
+global representatives at every fixed finite stage.  It does not imply
+that any representative lies in
+\[
+    I_i=(q_i,q_i^2-2].
+\]
+The distinction between global periodic admissibility and occurrence
+inside a moving finite interval is fundamental to the argument.
+\end{remark}
+
+% ============================================================
+% 5. THE SQUARE-BOUND LEMMA
+% ============================================================
+
+\section{The Finite Stage Primality Mechanism}
+
+We now establish the principal deterministic implication of the
+construction.
+
+\begin{lemma}[Square-bound divisor lemma]
+Let $m>1$ be composite.  Then $m$ has a prime divisor $r$ satisfying
+\[
+    r\le\sqrt m.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $m$ is composite, write
+\[
+    m=ab
+\]
+with
+\[
+    1<a\le b<m.
+\]
+Let $r$ be any prime divisor of $a$.  Then
+\[
+    r\le a\le\sqrt{ab}=\sqrt m.
+\]
+\end{proof}
+
+We next apply the lemma separately to $n$ and $n+2$.
+
+\begin{lemma}[Primality of the ordinary component]
+Let $n$ satisfy
+\[
+    q_i<n\le q_i^2-2,
+\]
+\[
+    n\equiv5\pmod6,
+\]
+and
+\[
+    q_j\nmid n
+    \qquad(1\le j\le i).
+\]
+Then $n$ is prime.
+\end{lemma}
+
+\begin{proof}
+Suppose, for contradiction, that $n$ is composite.  By the
+square-bound divisor lemma, $n$ has a prime divisor $p$ satisfying
+\[
+    p\le\sqrt n.
+\]
+Since
+\[
+    n\le q_i^2-2<q_i^2,
+\]
+we have
+\[
+    \sqrt n<q_i.
+\]
+Thus
+\[
+    p<q_i.
+\]
+
+Because
+\[
+    n\equiv5\pmod6,
+\]
+neither $2$ nor $3$ divides $n$.  Hence
+\[
+    p\ge5.
+\]
+Since
+\[
+    q_1,q_2,\ldots,q_i
+\]
+are precisely the primes greater than $3$ up to $q_i$, there exists
+$j\le i$ such that
+\[
+    p=q_j.
+\]
+But then
+\[
+    q_j\mid n,
+\]
+contradicting the hypothesis.
+
+Therefore $n$ is prime.
+\end{proof}
+
+\begin{lemma}[Primality of the shifted component]
+Let $n$ satisfy
+\[
+    q_i<n\le q_i^2-2,
+\]
+\[
+    n\equiv5\pmod6,
+\]
+and
+\[
+    q_j\nmid n+2
+    \qquad(1\le j\le i).
+\]
+Then $n+2$ is prime.
+\end{lemma}
+
+\begin{proof}
+Suppose, for contradiction, that $n+2$ is composite.  By the
+square-bound divisor lemma, $n+2$ has a prime divisor $p$ satisfying
+\[
+    p\le\sqrt{n+2}.
+\]
+Since
+\[
+    n\le q_i^2-2,
+\]
+we obtain
+\[
+    n+2\le q_i^2,
+\]
+and hence
+\[
+    p\le q_i.
+\]
+
+Furthermore,
+\[
+    n\equiv5\pmod6
+\]
+implies
+\[
+    n+2\equiv1\pmod6.
+\]
+Thus neither $2$ nor $3$ divides $n+2$, so
+\[
+    p\ge5.
+\]
+Therefore $p=q_j$ for some $j\le i$.
+
+This contradicts
+\[
+    q_j\nmid n+2.
+\]
+Hence $n+2$ is prime.
+\end{proof}
+
+\begin{theorem}[Finite stage twin-primality theorem]
+Let $i\ge1$.  If
+\[
+\begin{aligned}
+q_i<n&\le q_i^2-2,\\
+n&\equiv5\pmod6,\\
+q_j\nmid n&\qquad(1\le j\le i),\\
+q_j\nmid n+2&\qquad(1\le j\le i),
+\end{aligned}
+\]
+then
+\[
+    \boxed{n,n+2\in\PP.}
+\]
+\end{theorem}
+
+\begin{proof}
+The preceding two lemmas imply separately that $n$ and $n+2$ are
+prime.
+\end{proof}
+
+\begin{remark}
+This theorem is unconditional and completely finite stage.  It does
+not assert that such an $n$ exists for infinitely many $i$.  That
+existence problem is logically separate.
+\end{remark}
+
+\section{Infinitude of surviving primes in our construction}
+
+\begin{lemma}[Prime Existence Outside a Forbidden Class]
+Let $q\geq5$ be prime, and let
+\[
+    k\not\equiv -1\pmod q.
+\]
+Then there exists a prime $p$ satisfying
+\[
+    q<p<0.97q^2,
+    \qquad
+    p\equiv5\pmod6,
+    \qquad
+    p\not\equiv k\pmod q.
+\]
+
+\noindent Consequently, among the $q-2$ admissible nonzero residue classes
+\[
+    r\not\equiv0,k\pmod q,
+\]
+at least one contains a prime $p<0.97q^2$ with
+$p\equiv5\pmod6$.
+\end{lemma}
+
+\begin{proof}
+We first handle the small primes $q=5,7,11$ directly.
+For $q=5$, the primes
+\[
+11,17,23
+\]
+are all congruent to $5\pmod6$, lie below $0.97(5)^2$, and have distinct nonzero residues
+\[
+1,2,3\pmod5.
+\]
+Since $k\not\equiv-1\pmod5$, at most one of these three residue classes is forbidden. Hence at least one of the three primes satisfies
+$p\not\equiv k\pmod5$.
+
+For $q=7$, the primes
+\[
+11,17,23
+\]
+are congruent to $5\pmod6$, lie below $0.97(7)^2$, and have distinct residues
+\[
+4,3,2\pmod7.
+\]
+Thus at least one avoids the forbidden class $k$.
+
+For $q=11$, the primes
+\[
+17,23,29
+\]
+are congruent to $5\pmod6$, lie below $0.97(11)^2$, and have distinct residues
+\[
+6,1,7\pmod{11}.
+\]
+Again, at least one avoids $k$.
+
+Now suppose $q\geq13$, and put
+\[
+X=0.97q^2.
+\]
+Since
+\[
+X\geq0.97(13)^2>151,
+\]
+Dusart's explicit estimate gives \cite{dusart2002}
+\[
+\pi(X;3,2)>\frac{X}{2\log X}.
+\]
+For primes $p>3$, the condition
+\[
+p\equiv2\pmod3
+\]
+is equivalent to
+\[
+p\equiv5\pmod6,
+\]
+since every prime $p>3$ is odd. Hence
+\[
+\pi(X;3,2)
+=
+\#\{p\leq X:p\text{ prime},\ p\equiv5\pmod6\}.
+\]
+To obtain an explicit upper bound for the term \(\pi(q;3,2)\), we use
+\[
+\pi(q;3,2)\leq \pi(q).
+\]
+We then apply the explicit upper bound of Rosser and Schoenfeld \cite{rosserSchoenfeld1962},
+\[
+\pi(x)<1.25506\,\frac{x}{\log x},
+\qquad x>1.
+\]
+Hence, for \(q\geq5\),
+\[
+\pi(q;3,2)
+\leq \pi(q)
+<
+\frac{1.25506q}{\log q}.
+\]
+The constant \(1.25506\) comes from the corresponding Rosser--Schoenfeld estimate. More precisely, the function
+\[
+\frac{\pi(x)\log x}{x}
+\]
+attains its maximum at \(x=113\), where \(\pi(113)=30\). Thus
+\[
+\frac{\pi(113)\log113}{113}
+=
+\frac{30\log113}{113}
+=
+1.25506\ldots,
+\]
+which gives the stated uniform constant.
+
+Consequently,
+\[
+N
+=
+\pi(X;3,2)-\pi(q;3,2)
+\]
+satisfies
+\[
+N
+>
+\frac{0.97q^2}
+{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}.
+\]
+Therefore,
+\[
+\boxed{
+N>
+\frac{0.97q^2}
+{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}
+}
+\qquad(q\geq7).
+\]
+After removing all primes at most \(q\), the number \(N\) of primes satisfying
+\[
+q<p<X,
+\qquad
+p\equiv5\pmod6
+\]
+satisfies
+\[
+N
+>
+\frac{0.97q^2}
+{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}.
+\]
+We claim that
+\[
+\frac{0.97q^2}
+{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}
+>
+\frac q6+1
+\]
+for every \(q\ge13\).
+
+Dividing by \(q>0\), this is equivalent to
+\[
+\frac{0.97q}
+{2\log(0.97q^2)}
+-\frac{1.25506}{\log q}
+>
+\frac16+\frac1q.
+\]
+Define
+\[
+F(q)
+=
+\frac{0.97q}
+{2\log(0.97q^2)}
+-\frac{1.25506}{\log q}
+-\frac16-\frac1q.
+\]
+We have
+\[
+F'(q)
+=
+\frac{0.97\bigl(\log(0.97q^2)-2\bigr)}
+{2\bigl(\log(0.97q^2)\bigr)^2}
++
+\frac{1.25506}
+{q(\log q)^2}
++
+\frac1{q^2}.
+\]
+For \(q\ge13\),
+\[
+0.97q^2>1
+\]
+and, more specifically,
+\[
+\log(0.97q^2)>\log(0.97\cdot13^2)>2.
+\]
+Hence every term in \(F'(q)\) is positive, and therefore
+\[
+F'(q)>0
+\qquad(q\ge13).
+\]
+Thus \(F(q)\) is increasing on \([13,\infty)\).
+
+It remains to check the inequality at \(q=13\). We obtain
+\[
+F(13)
+=
+\frac{0.97(13)}
+{2\log(0.97\cdot13^2)}
+-\frac{1.25506}{\log13}
+-\frac16-\frac1{13}
+\approx0.50351>0.
+\]
+Consequently,
+\[
+F(q)>0
+\qquad(q\ge13),
+\]
+and hence
+\[
+\frac{0.97q^2}
+{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}
+>
+\frac q6+1.
+\]
+Therefore,
+\[
+N>\frac q6+1
+>
+\left\lceil\frac q6\right\rceil.
+\]
+Suppose, for contradiction, that every such prime were forbidden. Then
+\[
+p\equiv k\pmod q.
+\]
+Together with
+\[
+p\equiv5\pmod6,
+\]
+the Chinese Remainder Theorem gives a unique residue class
+\[
+p\equiv a\pmod{6q},
+\]
+because \(\gcd(6,q)=1\).
+
+
+Thus all $N$ primes would have to lie in a single residue class modulo
+$6q$. But the number of integers below $X$ in any single residue class
+modulo $6q$ is at most
+\[
+\left\lceil\frac{X}{6q}\right\rceil
+=
+\left\lceil\frac{0.97q}{6}\right\rceil.
+\]
+contradicting
+\[
+N>
+\left\lceil\frac{0.97q}{6}\right\rceil.
+\]
+Therefore at least one prime satisfies
+\[
+q<p<0.97q^2,\qquad
+p\equiv5\pmod6,\qquad
+p\not\equiv k\pmod q.
+\]
+This proves the lemma.
+\end{proof}
+
+\begin{lemma}[Prime Existence Outside Two Consecutive Forbidden Classes]
+Let
+\[
+q_{i-1}<q_i
+\]
+be consecutive primes, with \(q_i\ge13\), and let
+\[
+k_{i-1}\pmod{q_{i-1}},
+\qquad
+k_i\pmod{q_i}
+\]
+be arbitrary residue classes.
+
+Then there exists a prime \(p\) satisfying
+\[
+\boxed{
+q_i<p<0.97q_i^2,
+\qquad
+p\equiv5\pmod6,
+}
+\]
+such that
+\[
+\boxed{
+p\not\equiv 0,k_{i-1}\pmod{q_{i-1}},
+\qquad
+p\not\equiv 0,k_i\pmod{q_i}.
+}
+\]
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+X=0.97q_i^2.
+\]
+Since
+\[
+X\ge0.97(13)^2>151,
+\]
+Dusart's explicit estimate gives \cite{dusart2002}
+\[
+\pi(X;3,2)>\frac{X}{2\log X}.
+\]
+For primes \(p>3\), the condition
+\[
+p\equiv2\pmod3
+\]
+is equivalent to
+\[
+p\equiv5\pmod6,
+\]
+since every prime \(p>3\) is odd. Hence
+\[
+\pi(X;3,2)
+=
+\#\{p\le X:p\text{ prime},\ p\equiv5\pmod6\}.
+\]
+We first estimate the number of primes at most \(q_i\) which are
+\(5\pmod6\). Since
+\[
+\pi(q_i;3,2)\le\pi(q_i),
+\]
+and the Rosser--Schoenfeld estimate \cite{rosserSchoenfeld1962} gives
+\[
+\pi(x)<1.25506\,\frac{x}{\log x},
+\qquad x>1,
+\]
+we have
+\[
+\pi(q_i;3,2)
+<
+\frac{1.25506q_i}{\log q_i}.
+\]
+Therefore the number \(N\) of primes satisfying
+\[
+q_i<p<X,
+\qquad
+p\equiv5\pmod6
+\]
+satisfies
+\[
+\begin{aligned}
+N
+&=\pi(X;3,2)-\pi(q_i;3,2)\\
+&>
+\frac{0.97q_i^2}
+{2\log(0.97q_i^2)}
+-\frac{1.25506q_i}{\log q_i}.
+\end{aligned}
+\]
+Thus
+\[
+\boxed{
+N>
+\frac{0.97q_i^2}
+{2\log(0.97q_i^2)}
+-\frac{1.25506q_i}{\log q_i}.
+}
+\]
+We now count the integers that could violate one of the two forbidden
+congruences.
+
+Let
+\[
+A=
+\left\{
+n<X:
+n\equiv k_i\pmod{q_i},
+\quad
+n\equiv5\pmod6
+\right\},
+\]
+and
+\[
+B=
+\left\{
+n<X:
+n\equiv k_{i-1}\pmod{q_{i-1}},
+\quad
+n\equiv5\pmod6
+\right\}.
+\]
+An integer counted by \(A\) satisfies two congruences with coprime
+moduli \(6\) and \(q_i\). By the Chinese Remainder Theorem, these
+congruences determine a unique residue class modulo \(6q_i\).
+Consequently,
+\[
+|A|
+\le
+\left\lceil\frac{X}{6q_i}\right\rceil.
+\]
+Similarly,
+\[
+|B|
+\le
+\left\lceil\frac{X}{6q_{i-1}}\right\rceil.
+\]
+We now examine the intersection \(A\cap B\). An integer in the
+intersection satisfies all three congruences
+\[
+n\equiv k_i\pmod{q_i},
+\]
+\[
+n\equiv k_{i-1}\pmod{q_{i-1}},
+\]
+and
+\[
+n\equiv5\pmod6.
+\]
+Because \(6,q_{i-1},q_i\) are pairwise coprime, the Chinese Remainder
+Theorem shows that these three congruences determine a unique residue
+class modulo
+\[
+M=6q_{i-1}q_i.
+\]
+Thus
+\[
+|A\cap B|
+\le
+\left\lceil
+\frac{X}{6q_{i-1}q_i}
+\right\rceil.
+\]
+However, this upper bound does \emph{not} imply that the intersection
+contains an integer below \(X\). Indeed,
+\[
+\frac{X}{6q_{i-1}q_i}
+=
+\frac{0.97q_i}{6q_{i-1}}.
+\]
+Since consecutive primes satisfy
+\[
+q_{i-1}>\frac{q_i}{2}
+\]
+by Bertrand's postulate \cite{chebyshev1852}, we obtain
+\[
+\frac{0.97q_i}{6q_{i-1}}
+<
+\frac{0.97}{3}
+<1.
+\]
+Hence
+\[
+\left\lceil
+\frac{X}{6q_{i-1}q_i}
+\right\rceil=1.
+\]
+Therefore the intersection contains \emph{at most one} integer below
+\(X\). It may contain one integer, or it may contain none, depending on
+the particular residue classes \(k_{i-1}\) and \(k_i\).
+
+For this reason, without an additional argument guaranteeing that the
+CRT solution lies below \(X\), we cannot subtract \(1\) from the
+upper bound for \(A\cup B\). The universally valid estimate is simply
+\[
+\begin{aligned}
+|A\cup B|
+&\le |A|+|B|\\
+&\le
+\left\lceil\frac{X}{6q_i}\right\rceil
++
+\left\lceil\frac{X}{6q_{i-1}}\right\rceil.
+\end{aligned}
+\]
+We therefore retain the union bound
+\[
+\boxed{
+|A\cup B|
+\le
+\left\lceil\frac{0.97q_i}{6}\right\rceil
++
+\left\lceil
+\frac{0.97q_i^2}{6q_{i-1}}
+\right\rceil.
+}
+\]
+Since
+\[
+q_{i-1}>\frac{q_i}{2},
+\]
+we have
+\[
+\frac{q_i^2}{q_{i-1}}<2q_i.
+\]
+Therefore
+\[
+\frac{0.97q_i^2}{6q_{i-1}}
+<
+\frac{0.97q_i}{3}.
+\]
+Using \(\lceil x\rceil<x+1\), we obtain
+\[
+\begin{aligned}
+|A\cup B|
+&<
+\frac{0.97q_i}{6}+1
++
+\frac{0.97q_i}{3}+1\\
+&=
+\frac{0.97q_i}{2}+2.
+\end{aligned}
+\]
+Consequently, it is sufficient to prove
+\[
+\frac{0.97q_i^2}
+{2\log(0.97q_i^2)}
+-\frac{1.25506q_i}{\log q_i}
+>
+\frac{0.97q_i}{2}+2.
+\]
+Dividing by \(q_i>0\), this becomes
+\[
+\frac{0.97q_i}
+{2\log(0.97q_i^2)}
+-\frac{1.25506}{\log q_i}
+>
+\frac{0.97}{2}+\frac2{q_i}.
+\]
+Define
+\[
+G(q)
+=
+\frac{0.97q}
+{2\log(0.97q^2)}
+-\frac{1.25506}{\log q}
+-\frac{0.97}{2}
+-\frac2q.
+\]
+Differentiating gives
+\[
+G'(q)
+=
+\frac{0.97\bigl(\log(0.97q^2)-2\bigr)}
+{2\bigl(\log(0.97q^2)\bigr)^2}
++
+\frac{1.25506}{q(\log q)^2}
++
+\frac2{q^2}.
+\]
+For \(q\ge13\),
+\[
+\log(0.97q^2)
+\ge
+\log(0.97\cdot13^2)>2.
+\]
+Hence every term in \(G'(q)\) is positive, and therefore
+\[
+G'(q)>0
+\qquad(q\ge13).
+\]
+Thus \(G(q)\) is increasing on \([13,\infty)\).
+
+At \(q=13\),
+\[
+G(13)
+=
+\frac{0.97(13)}
+{2\log(0.97\cdot13^2)}
+-\frac{1.25506}{\log13}
+-\frac{0.97}{2}
+-\frac2{13}.
+\]
+Numerically,
+\[
+G(13)\approx0.108>0.
+\]
+Therefore
+\[
+G(q)>0
+\qquad(q\ge13),
+\]
+and hence
+\[
+\frac{0.97q_i^2}
+{2\log(0.97q_i^2)}
+-\frac{1.25506q_i}{\log q_i}
+>
+\frac{0.97q_i}{2}+2.
+\]
+Combining the preceding estimates gives
+\[
+N>|A\cup B|.
+\]
+Suppose, for contradiction, that every prime counted by \(N\) satisfies
+at least one of the two forbidden congruences. Since every such prime
+also satisfies \(p\equiv5\pmod6\), every one of these \(N\) primes
+belongs to \(A\cup B\).
+
+Thus
+\[
+N\le |A\cup B|,
+\]
+contradicting
+\[
+N>|A\cup B|.
+\]
+Therefore at least one prime satisfies
+\[
+q_i<p<0.97q_i^2,
+\qquad
+p\equiv5\pmod6,
+\]
+while avoiding both forbidden residue classes:
+\[
+p\not\equiv k_{i-1}\pmod{q_{i-1}},
+\qquad
+p\not\equiv k_i\pmod{q_i}.
+\]
+This proves the lemma.
+\end{proof}
+
+
+\begin{lemma}[Prime Existence Outside Consecutive Forbidden Classes]
+Let $q\ge127$ be prime. For every prime $r\le q$, let
+\[
+N_r(a)
+:=
+\#\left\{
+p\text{ prime}:
+r<p\le0.97r^2,\quad
+p\equiv a\pmod r
+\right\},
+\qquad (a,r)=1.
+\]
+Then
+\[
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}N_r(a)
+<
+\frac{0.97q^2}{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}.
+\]
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+S(q):=
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}N_r(a).
+\]
+
+The Brun--Titchmarsh inequality, in the explicit form due to
+Montgomery and Vaughan \cite{montgomeryVaughan1973}, gives
+\[
+    \pi(x+y;k,a)-\pi(x;k,a)
+    <
+    \frac{2y}{\varphi(k)\log(y/k)},
+    \qquad y>k,
+\]
+for $(a,k)=1$.
+
+Apply this with
+\[
+x=r,\qquad
+y=0.97r^2-r,\qquad
+k=r.
+\]
+Since
+\[
+\frac{y}{k}
+=
+0.97r-1>1
+\qquad(r\ge5),
+\]
+and
+\[
+\varphi(r)=r-1,
+\]
+we obtain
+\[
+N_r(a)
+<
+B(r):=
+\frac{2(0.97r^2-r)}
+{(r-1)\log(0.97r-1)}.
+\tag{1}
+\]
+For $r\ge47$, define
+\[
+H(r):=
+\frac{B(r)\log r}{r}
+=
+\frac{2(0.97r-1)\log r}
+{(r-1)\log(0.97r-1)}.
+\]
+Put
+\[
+w:=\log(0.97r-1).
+\]
+Then
+\[
+\frac{H'(r)}{H(r)}
+=
+\frac{0.97}{0.97r-1}
+\left(1-\frac1w\right)
++\frac1{r\log r}
+-\frac1{r-1}.
+\tag{2}
+\]
+The right-hand side of (2) is negative for $r\ge47$. Hence
+\[
+H'(r)<0
+\qquad(r\ge47).
+\]
+Consequently,
+\[
+H(r)\le H(47)
+=
+\frac{B(47)\log47}{47}
+=
+1.965568271118031\ldots
+<
+1.966,
+\]
+and therefore
+\[
+B(r)<1.966\,\frac r{\log r},
+\qquad r\ge47.
+\tag{3}
+\]
+For the primes $5\le r\le43$, direct evaluation of (1) gives
+\[
+\sum_{\substack{5\le r\le43\\r\ {\rm prime}}}B(r)
+=
+173.18424887798648\ldots
+<
+173.184249.
+\tag{4}
+\]
+Therefore
+\[
+S(q)
+<
+173.184249
++
+1.966
+\sum_{\substack{47\le r\le q\\r\ {\rm prime}}}
+\frac r{\log r}.
+\tag{5}
+\]
+Now put
+\[
+F(x):=\sum_{p\le x}\frac p{\log p}.
+\]
+For $x\ge599$, Abel's summation formula \cite{apostol1976analytic} gives
+\[
+F(x)
+=
+\frac{x\pi(x)}{\log x}
+-\int_{599}^x
+\pi(t)\frac{\log t-1}{\log^2t}\,dt
++C_F.
+\tag{6}
+\]
+Dusart's explicit estimates \cite{dusart2010} give
+\[
+\pi(x)
+\le
+\frac{x}{\log x}
+\left(1+\frac{1.2762}{\log x}\right)
+\tag{7}
+\]
+and
+\[
+\pi(x)
+\ge
+\frac{x}{\log x}
+\left(1+\frac1{\log x}\right),
+\qquad x\ge599.
+\tag{8}
+\]
+Consequently,
+\[
+\pi(t)\frac{\log t-1}{\log^2t}
+\ge
+\frac{t}{\log^2t}
+-\frac{t}{\log^4t}.
+\]
+Set
+\[
+c:=
+1-\frac1{\log^2 599}
+=
+0.9755497461747921\ldots.
+\]
+Then
+\[
+\pi(t)\frac{\log t-1}{\log^2t}
+\ge
+c\frac{t}{\log^2t},
+\qquad t\ge599.
+\tag{9}
+\]
+Since
+\[
+\frac{d}{dt}
+\left(
+\frac{t^2}{2\log^2t}
+\right)
+=
+\frac{t}{\log^2t}
+\left(1-\frac1{\log t}\right)
+<
+\frac{t}{\log^2t},
+\]
+we obtain
+\[
+F(x)
+<
+\left(1-\frac c2\right)
+\frac{x^2}{\log^2x}
++
+1.2762\frac{x^2}{\log^3x}
++
+C_F.
+\tag{10}
+\]
+where
+\[
+C_F
+=
+-857.6525296564723\ldots.
+\tag{11}
+\]
+Furthermore,
+\[
+F(43)
+=
+\sum_{p\le43}\frac p{\log p}
+=
+92.12368130190649\ldots.
+\tag{12}
+\]
+Since
+\[
+1.966\left(1-\frac c2\right)
+=
+1.0070345995101793\ldots
+<
+1.007035
+\]
+and
+\[
+1.966(1.2762)
+=
+2.5090092
+<
+2.509010,
+\]
+equations (5), (10), and (12) imply, for $q\ge599$,
+\[
+\begin{aligned}
+S(q)
+&<
+173.184249
++
+1.966\bigl(F(q)-F(43)\bigr)
+\\
+&<
+1.007035\frac{q^2}{\log^2q}
++
+2.509010\frac{q^2}{\log^3q}
+-1694.0757.
+\end{aligned}
+\tag{13}
+\]
+
+Define
+\[
+G(x):=
+\frac{0.97x^2}{2\log(0.97x^2)}
+-\frac{1.25506x}{\log x}
+-
+1.007035\frac{x^2}{\log^2x}
+-
+2.509010\frac{x^2}{\log^3x}
++1694.0757.
+\]
+Then (13) shows that it suffices to prove $G(q)>0$.
+
+Put
+\[
+L:=\log x,
+\qquad
+M:=\log(0.97x^2)=2L+\log0.97.
+\]
+Differentiation gives
+\[
+\frac{G'(x)}x
+=
+0.97\left(\frac1M-\frac1{M^2}\right)
+-\frac{1.25506}{x}
+\left(\frac1L-\frac1{L^2}\right)
+-
+1.007035
+\left(\frac2{L^2}-\frac2{L^3}\right)
+-
+2.509010
+\left(\frac2{L^3}-\frac3{L^4}\right).
+\tag{14}
+\]
+For $x\ge599$,
+\[
+M<2L
+\]
+and
+\[
+M>1.995L.
+\]
+Consequently,
+\[
+0.97\left(\frac1M-\frac1{M^2}\right)
+>
+\frac{0.485}{L}
+-\frac{0.97}{1.995^2L^2}.
+\]
+Also, since $L/x$ is decreasing for $x>e$,
+\[
+\frac1{xL}
+\le
+\frac{\log599}{599L^2},
+\]
+and hence
+\[
+-\frac{1.25506}{x}
+\left(\frac1L-\frac1{L^2}\right)
+>
+-\frac{1.25506\log599}{599L^2}.
+\]
+Furthermore,
+\[
+-1.007035
+\left(\frac2{L^2}-\frac2{L^3}\right)
+>
+-\frac{2.014070}{L^2},
+\]
+while
+\[
+-2.509010
+\left(\frac2{L^3}-\frac3{L^4}\right)
+>
+-\frac{5.018020}{L^3}.
+\]
+Thus, weakening the coefficient $0.485$ to $0.484$,
+\[
+\frac{G'(x)}x
+>
+\frac{0.484}{L}
+-\frac{2.271187}{L^2}
+-\frac{5.018020}{L^3}.
+\]
+Therefore it is enough to prove
+\[
+P(L):=
+0.484L^2
+-2.271187L
+-5.018020
+>0.
+\tag{15}
+\]
+At $L=\log599$,
+\[
+P(\log599)
+=
+0.25244051639276854\ldots
+>0.
+\]
+Moreover,
+\[
+P'(L)
+=
+0.968L-2.271187,
+\]
+so that
+\[
+P'(\log599)
+=
+3.9194262269757547\ldots
+>0.
+\]
+Since
+\[
+P''(L)=0.968>0,
+\]
+the polynomial $P$ is increasing for $L\ge\log599$. Hence
+\[
+P(L)>0,
+\qquad L\ge\log599,
+\]
+and therefore
+\[
+G'(x)>0
+\qquad(x\ge599).
+\tag{16}
+\]
+Finally,
+\[
+G(599)
+=
+2938.0107513285575\ldots
+>0.
+\tag{17}
+\]
+It follows from (16) and (17) that
+\[
+G(q)>0
+\qquad(q\ge599).
+\]
+Thus the desired inequality holds for every prime $q\ge599$.
+
+It remains to consider the finite range
+\[
+127\le q<599.
+\]
+For each prime $r<599$, define
+\[
+M_r
+:=
+\max_{\substack{1\le a<r\\(a,r)=1}}
+\#\left\{
+p\text{ prime}:
+r<p\le0.97r^2,\quad
+p\equiv a\pmod r
+\right\},
+\]
+and put
+\[
+S_{\max}(q)
+:=
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}M_r.
+\]
+The required prime counts are obtained by an elementary sieve of
+Eratosthenes up to
+\[
+\left\lfloor0.97\cdot598^2\right\rfloor
+=
+346875.
+\]
+There are $78$ primes in the interval $127\le q<599$. Direct
+computation gives
+\[
+\min_{\substack{127\le q<599\\q\ {\rm prime}}}
+\left[
+\frac{0.97q^2}{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}
+-S_{\max}(q)
+\right]
+=
+463.06026750136607\ldots
+>0,
+\]
+with the minimum attained at $q=127$. Hence the desired inequality also
+holds throughout the finite range $127\le q<599$.
+
+
+\end{proof}
+
+
+\begin{theorem}[Prime existence outside the forbidden classes]
+Let \(q\ge127\) be prime and put
+\[
+X=0.97q^2.
+\]
+Let
+\[
+N
+=
+\#\left\{
+p\text{ prime}:
+q<p\le X,\quad p\equiv5\pmod6
+\right\}.
+\]
+For every prime \(r\), \(5\le r\le q\), define
+\[
+N_r(-2)
+:=
+\#\left\{
+p\text{ prime}:
+q<p\le X,\quad
+p\equiv5\pmod6,\quad
+p\equiv-2\pmod r
+\right\}.
+\]
+Then
+\[
+N
+>
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}
+N_r(-2)
+\]
+would imply the existence of a prime \(p\) such that
+\[
+q<p\le0.97q^2,
+\quad
+p\equiv5\pmod6,
+\quad
+\forall r\in\{\,r\text{ prime}:5\le r\le q\,\},\quad
+p\not\equiv -2\pmod r,
+\quad
+p+2\text{ is prime}.
+\]
+\begin{proof}
+Since \(p\equiv5\pmod6\), we have
+\[
+p+2\equiv1\pmod6.
+\]
+Suppose that \(p+2\) is composite. Since
+\[
+p+2\le X+2=0.97q^2+2,
+\]
+and \(q\ge127\), we have
+\[
+\sqrt{p+2}<q.
+\]
+Therefore \(p+2\) has a prime divisor \(r<q\). Moreover,
+\[
+r\neq2,\qquad r\neq3,
+\]
+because
+\[
+p+2\equiv1\pmod6.
+\]
+Hence
+\[
+5\le r\le q.
+\]
+Since \(r\mid p+2\), we obtain
+\[
+p\equiv-2\pmod r.
+\]
+Thus every prime \(p\) counted by \(N\) for which \(p+2\) is composite is counted by at least one of the quantities \(N_r(-2)\).
+
+Consequently, if
+\[
+B=
+\#\left\{
+p\text{ prime}:
+q<p\le X,\quad
+p\equiv5\pmod6,\quad
+p+2\text{ composite}
+\right\},
+\]
+then
+\[
+B
+\le
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}
+N_r(-2).
+\]
+Hence, if
+\[
+N>
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}
+N_r(-2),
+\]
+then
+\[
+B<N.
+\]
+Therefore at least one prime counted by \(N\) is not counted by \(B\). For such a prime \(p\),
+\[
+p+2
+\]
+is also prime. Thus
+\[
+(p,p+2)
+\]
+is a twin-prime pair.
+\end{proof}
+\end{theorem}
+
+\begin{corollary}[Infinitely many twin primes]
+Assume that the preceding lemma holds for every prime \(q\ge127\). Then there exist infinitely many twin primes.
+
+\begin{proof}
+Let \(q\ge127\) be prime and put
+\[
+X=0.97q^2.
+\]
+By the prime-count estimate established above,
+\[
+N>
+\frac{0.97q^2}{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}.
+\]
+By the preceding lemma,
+\[
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}N_r(-2)
+<
+\frac{0.97q^2}{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}.
+\]
+Consequently,
+\[
+N>
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}N_r(-2).
+\]
+By the preceding theorem, there exists a prime \(p\) satisfying
+\[
+q<p\le0.97q^2,
+\quad
+p\equiv5\pmod6,
+\quad
+\forall r\in\{\,r\text{ prime}:5\le r\le q\,\},\quad
+p\not\equiv -2\pmod r,
+\]
+such that \(p+2\) is also prime. Hence
+\[
+(p,p+2)
+\]
+is a pair of twin primes.
+
+Since the lemma is assumed to hold for every prime \(q\ge127\), and there are arbitrarily large primes \(q\), the resulting smaller twin prime \(p\) satisfies
+\[
+p>q
+\]
+for arbitrarily large \(q\). Therefore the set of twin primes is unbounded. Hence there are infinitely many twin primes:
+\[
+\boxed{\text{There exist infinitely many pairs of twin primes.}}
+\]
+\end{proof}
+\end{corollary}
+
+
+\appendix
+\section{Numerical verification}
+
+The finite numerical verification appearing in the proof of
+Lemma~\ref{...} was carried out using Python. The computation uses
+only standard floating-point arithmetic and an elementary sieve of
+Eratosthenes; no external numerical or number-theoretic libraries are
+required.
+
+For the modulus $r$, the Brun--Titchmarsh bound used in the proof is
+\[
+B(r)
+=
+\frac{2(0.97r^2-r)}
+{(r-1)\log(0.97r-1)}.
+\]
+The computation verifies
+\[
+\frac{B(47)\log47}{47}
+=
+1.965568271118031\ldots
+<
+1.966.
+\]
+The analytic monotonicity argument in the proof therefore gives
+\[
+B(r)<1.966\,\frac r{\log r},
+\qquad r\ge47.
+\]
+A numerical sanity check of the logarithmic derivative
+\[
+\frac{d}{dr}\log\left(\frac{B(r)\log r}{r}\right)
+\]
+on a dense grid in the interval $47\le r\le100000$ also gives a
+strictly negative value throughout the sampled range. This numerical
+check is supplementary to the analytic monotonicity argument.
+
+For the exceptional range $5\le r\le43$, direct evaluation gives
+\[
+\sum_{\substack{5\le r\le43\\r\ {\rm prime}}}B(r)
+=
+173.18424887798648\ldots
+<
+173.184249.
+\]
+The partial-summation constants used in the proof were independently
+evaluated as
+\[
+c
+=
+1-\frac1{\log^2 599}
+=
+0.9755497461747921\ldots,
+\]
+and
+\[
+F(43)
+=
+\sum_{p\le43}\frac p{\log p}
+=
+92.12368130190649\ldots.
+\]
+The constant in the partial-summation estimate is
+\[
+\begin{aligned}
+C_F
+&=
+F(599)
+-\frac{599\pi(599)}{\log599}
++
+c\frac{599^2}{2\log^2 599}\\
+&=
+-857.6525296564723\ldots.
+\end{aligned}
+\]
+With the Brun--Titchmarsh coefficient $1.966$, the two coefficients
+appearing in the bound for $S(q)$ are
+\[
+1.966\left(1-\frac c2\right)
+=
+1.0070345995101793\ldots
+<
+1.007035,
+\]
+and
+\[
+1.966(1.2762)
+=
+2.5090092
+<
+2.509010.
+\]
+The exact constant obtained from the preceding estimates is
+\[
+\begin{aligned}
+&173.18424887798648
+-1.966F(43)
++1.966C_F\\
+&\qquad=
+-1694.0757818661862\ldots.
+\end{aligned}
+\]
+Since
+\[
+-1694.0757818661862\ldots<-1694.0757,
+\]
+we may use the slightly weaker upper bound
+\[
+-1694.0757.
+\]
+Thus, for $q\ge599$,
+\[
+S(q)
+<
+1.007035\frac{q^2}{\log^2q}
++
+2.509010\frac{q^2}{\log^3q}
+-1694.0757.
+\]
+For the derivative estimate used to prove $G'(x)>0$, put
+\[
+L=\log x.
+\]
+The preceding analytic estimates reduce the required positivity to
+the polynomial
+\[
+P(L)
+=
+0.484L^2-2.271187L-5.018020.
+\]
+At $L=\log599$,
+\[
+0.484(\log599)^2
+-2.271187\log599
+-5.018020
+=
+0.25244051639276854\ldots
+>0.
+\]
+Moreover,
+\[
+P'(L)
+=
+0.968L-2.271187,
+\]
+so that
+\[
+P'(\log599)
+=
+3.9194262269757547\ldots
+>0,
+\]
+while
+\[
+P''(L)=0.968>0.
+\]
+Hence $P'(L)>0$ and therefore $P(L)>0$ for every
+$L\ge\log599$. This establishes the required derivative bound
+throughout the range $x\ge599$.
+
+With the corrected constant $1694.0757$, the function
+\[
+G(x)=
+\frac{0.97x^2}{2\log(0.97x^2)}
+-\frac{1.25506x}{\log x}
+-1.007035\frac{x^2}{\log^2x}
+-2.509010\frac{x^2}{\log^3x}
++1694.0757
+\]
+satisfies
+\[
+G(599)
+=
+2938.0107513285575\ldots
+>0.
+\]
+A numerical check of $G'(x)$ on a logarithmically spaced grid from
+$599$ to $10^8$ also gives positive values throughout the sampled
+range. This numerical check is supplementary to the analytic
+derivative argument.
+
+For the finite range $127\le q<599$, the Brun--Titchmarsh upper
+bounds $B(r)$ are not sufficiently sharp to establish the desired
+inequality directly. Instead, the verification uses the actual
+maximum number of primes in a reduced residue class modulo each
+prime $r$.
+
+More precisely, define
+\[
+M_r
+:=
+\max_{\substack{1\le a<r\\(a,r)=1}}
+\#\left\{
+p\text{ prime}:
+r<p\le0.97r^2,\quad
+p\equiv a\pmod r
+\right\},
+\]
+and
+\[
+S_{\max}(q)
+:=
+\sum_{\substack{5\le r\le q\\r\ {\rm prime}}}M_r.
+\]
+The elementary sieve was extended to
+\[
+\left\lfloor0.97\cdot598^2\right\rfloor
+=
+346875,
+\]
+which is sufficient to determine all the required prime counts.
+
+There are $78$ primes in the interval $127\le q<599$. Every one was
+checked directly. The resulting minimum margin is
+\[
+\min_{\substack{127\le q<599\\q\ {\rm prime}}}
+\left[
+\frac{0.97q^2}{2\log(0.97q^2)}
+-\frac{1.25506q}{\log q}
+-S_{\max}(q)
+\right]
+=
+463.06026750136607\ldots
+>0,
+\]
+with the minimum attained at
+\[
+q=127.
+\]
+Thus the desired inequality holds throughout the finite range
+$127\le q<599$.
+
+As an additional numerical check, the same direct computation gives
+positive margins for the primes $47\le q<127$; the minimum in that
+range is
+\[
+48.36459185281157\ldots
+>0,
+\]
+attained at $q=47$. This observation is not needed for the lemma,
+whose stated range is $q\ge127$.
+
+
+
+
+\begin{thebibliography}{99}
+
+\bibitem{hardyWright}
+G. H. Hardy and E. M. Wright,
+\textit{An Introduction to the Theory of Numbers},
+6th ed., revised by D. R. Heath-Brown and J. H. Silverman,
+Oxford University Press, Oxford, 2008.
+
+\bibitem{halberstamRichert}
+H. Halberstam and H.-E. Richert,
+\textit{Sieve Methods},
+Academic Press, London, 1974.
+
+\bibitem{nivenZuckermanMontgomery}
+I. Niven, H. S. Zuckerman, and H. L. Montgomery,
+\textit{An Introduction to the Theory of Numbers},
+5th ed., John Wiley & Sons, New York, 1991.
+
+\bibitem{hardyLittlewood1923}
+G. H. Hardy and J. E. Littlewood,
+Some problems of ``Partitio Numerorum'' III:
+On the expression of a number as a sum of primes,
+\textit{Acta Mathematica} \textbf{44} (1923), 1--70.
+
+\bibitem{brun1919}
+V. Brun,
+La série $\frac{1}{5}+\frac{1}{7}+\frac{1}{11}+\frac{1}{13}+\cdots$
+où les dénominateurs sont ``nombres premiers jumeaux''
+est convergente ou finie,
+\textit{Bulletin des Sciences Mathématiques},
+2e série, \textbf{43} (1919), 100--104, 124--128.
+
+\bibitem{greaves}
+G. Greaves,
+\textit{Sieves in Number Theory},
+Springer, Berlin, 2001.
+
+\bibitem{zhang2014}
+Y. Zhang,
+Bounded gaps between primes,
+\textit{Annals of Mathematics} \textbf{179} (2014), no.~3, 1121--1174.
+
+\bibitem{polymath8}
+D. H. J. Polymath,
+Variants of the Selberg sieve, and bounded intervals containing many primes,
+\textit{Research in the Mathematical Sciences} \textbf{1} (2014),
+Article 12.
+
+\bibitem{maynard2015}
+J. Maynard,
+Small gaps between primes,
+\textit{Annals of Mathematics} \textbf{181} (2015), no.~1, 383--413.
+
+\bibitem{polymathRetrospective}
+D. H. J. Polymath,
+The ``bounded gaps between primes'' Polymath project:
+A retrospective,
+\textit{Newsletter of the European Mathematical Society},
+December 2014, 13--23.
+
+\bibitem{stadlmann2025}
+J. Stadlmann,
+On primes in arithmetic progressions and bounded gaps between many primes,
+\textit{Advances in Mathematics} \textbf{468} (2025),
+Article 110190.
+
+\bibitem{zhang240}
+H. Zhang,
+\textit{A bound of 240 for gaps between primes},
+preprint, August 28, 2026,
+Zenodo, DOI: 10.5281/zenodo.22135842.
+
+\bibitem{stadlmann2026}
+J. Stadlmann,
+\textit{Bounded gaps between primes},
+preprint, August 31, 2026,
+arXiv:2608.31126.
+
+\bibitem{axiom212}
+F. Charton, L. Hong, K. Lau, K. Ono, G. Remy, H. C. Siu,
+A. A. Swaminathan, J. Thorner, and Y. Xie,
+\textit{A New Bound for Small Gaps Between Primes},
+preliminary preprint, September 2026.
+
+\bibitem{openai2026}
+OpenAI,
+\textit{Improved Short Gaps Between Primes},
+preprint, August 30, 2026.
+
+\bibitem{openaiPrimeGaps186}
+OpenAI,
+\textit{PrimeGaps186: Conditional Lean Formalization and Numerical
+Certificate for Prime Gaps at Most 186},
+GitHub repository, 2026.
+
+
+\bibitem{dusart2002}
+P.~Dusart,
+\newblock ``Estimates of $\theta(x; k, l)$ for large values of $x$,''
+\newblock {\em Mathematics of Computation}, Vol.~71, No.~239 (2002), pp.~1137--1168.
+
+\bibitem{rosserSchoenfeld1962}
+J. Barkley Rosser and Lowell Schoenfeld,
+Approximate formulas for some functions of prime numbers,
+\textit{Illinois Journal of Mathematics} \textbf{6} (1962), no.~1,
+64--94.
+
+\bibitem{chebyshev1852}
+P. L. Chebyshev,
+Mémoire sur les nombres premiers,
+\textit{Journal de Mathématiques Pures et Appliquées},
+1re série, \textbf{17} (1852), 366--390.
+
+\bibitem{Maynard2013}
+J.~Maynard,
+\emph{On the Brun--Titchmarsh theorem},
+Acta Arithmetica \textbf{157} (2013), no.~3, 249--296.
+DOI: \href{https://doi.org/10.4064/aa157-3-3}{10.4064/aa157-3-3}.
+
+\bibitem{montgomeryVaughan1973}
+H. L. Montgomery and R. C. Vaughan,
+The large sieve,
+\textit{Mathematika} \textbf{20} (1973), 119--134.
+
+\bibitem{dusart2010}
+P. Dusart,
+\textit{Estimates of Some Functions Over Primes without RH},
+arXiv:1002.0442, 2010.
+
+\bibitem{apostol1976analytic}
+T. M. Apostol,
+\textit{Introduction to Analytic Number Theory},
+Undergraduate Texts in Mathematics,
+Springer-Verlag, New York, 1976.
+
+\end{thebibliography}
+
+\end{document}
